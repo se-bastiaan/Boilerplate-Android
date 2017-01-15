@@ -3,7 +3,9 @@ package com.digitalisma.boilerplate.ui.main;
 import com.digitalisma.boilerplate.data.DataManager;
 import com.digitalisma.boilerplate.data.model.Person;
 import com.digitalisma.boilerplate.injection.ConfigPersistent;
+import com.digitalisma.boilerplate.injection.PerActivity;
 import com.digitalisma.boilerplate.ui.base.BasePresenter;
+import com.digitalisma.boilerplate.util.RxSubscriber;
 import com.digitalisma.boilerplate.util.RxUtil;
 
 import java.util.List;
@@ -16,7 +18,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-@ConfigPersistent
+@PerActivity
 public class MainPresenter extends BasePresenter<MainView> {
 
     private final DataManager dataManager;
@@ -33,11 +35,7 @@ public class MainPresenter extends BasePresenter<MainView> {
         subscription = dataManager.getPersons()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<Person>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
+                .subscribe(new RxSubscriber<List<Person>>() {
                     @Override
                     public void onError(Throwable e) {
                         Timber.e(e, "There was an error loading the persons.");

@@ -35,6 +35,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final LongSparseArray<ConfigPersistentComponent> COMPONENT_MAP = new LongSparseArray<>();
 
     private long activityId;
+    private ActivityComponent activityComponent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class BaseActivity extends AppCompatActivity {
             Timber.i("Reusing ConfigPersistentComponent id=%d", activityId);
             configPersistentComponent = COMPONENT_MAP.get(activityId);
         }
-        ActivityComponent activityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
+        activityComponent = configPersistentComponent.activityComponent(new ActivityModule(this));
         injectActivity(activityComponent);
     }
 
@@ -78,6 +79,10 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         DigitalismaApplication.get(this).getComponent().leakCanaryProxy().watch(this);
         super.onDestroy();
+    }
+
+    public ActivityComponent getActivityComponent() {
+        return activityComponent;
     }
 
     protected void injectActivity(ActivityComponent component) {

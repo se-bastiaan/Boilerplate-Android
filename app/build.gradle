@@ -30,7 +30,7 @@ paperwork {
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         multiDexEnabled true
@@ -136,18 +136,18 @@ play {
 
 ext {
     autoValueVersion = '1.3'
-    autoValueGsonVersion = '0.4.4'
+    autoValueGsonVersion = '0.4.5'
     butterknifeVersion = '8.4.0'
-    daggerVersion = '2.7'
+    daggerVersion = '2.8'
     dexmakerVersion = '1.4'
-    espressoVersion = '2.2.2'
-    googleServicesVersion = '9.8.0'
+    espressoVersion = '2.2'
+    googleServicesVersion = '10.0.1'
     hamcrestVersion = '1.3'
-    okhttpVersion = '3.4.1'
+    okhttpVersion = '3.5.0'
     retrofitVersion = '2.1.0'
-    stethoVersion = '1.3.1'
-    supportLibVersion = '25.0.0'
-    supportTestRunnerVersion = '0.4'
+    stethoVersion = '1.4.2'
+    supportLibVersion = '25.1.0'
+    supportTestRunnerVersion = '0.5'
 }
 
 /**
@@ -156,13 +156,13 @@ ext {
 dependencies {
     def daggerCompiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
     def jUnit = "junit:junit:4.12"
-    def mockito = "org.mockito:mockito-core:1.10.19"
+    def mockito = "org.mockito:mockito-core:2.6.3"
 
-    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.3.0'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:2.4.0'
 
     // App Dependencies
     // TODO: Add specific GMS dependencies for your project instead of using the 'all' dependency
-    compile "com.google.android.gms:play-services-gcm:${googleServicesVersion}"
+    compile "com.google.android.gms:play-services:${googleServicesVersion}"
     compile 'com.android.support:multidex:1.0.1'
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.android.support:recyclerview-v7:${supportLibVersion}"
@@ -170,7 +170,6 @@ dependencies {
     compile "com.android.support:support-annotations:${supportLibVersion}"
 
     compile "com.squareup.okhttp3:okhttp:${okhttpVersion}"
-    compile "com.squareup.okhttp3:okhttp-ws:${okhttpVersion}"
     compile "com.squareup.okhttp3:logging-interceptor:${okhttpVersion}"
     compile "com.squareup.retrofit2:retrofit:${retrofitVersion}"
     compile "com.squareup.retrofit2:converter-gson:${retrofitVersion}"
@@ -182,11 +181,11 @@ dependencies {
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.1.8'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.7@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
 
-    compile 'com.jakewharton.timber:timber:4.1.2'
+    compile 'com.jakewharton.timber:timber:4.5.0'
     compile "com.jakewharton:butterknife:$butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
@@ -199,8 +198,7 @@ dependencies {
     annotationProcessor "com.google.auto.value:auto-value:${autoValueVersion}"
     annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
     annotationProcessor "com.ryanharter.auto.value:auto-value-gson:${autoValueGsonVersion}"
-    annotationProcessor 'com.squareup:javapoet:1.7.0' // https://github.com/rharter/auto-value-parcel/issues/64
-
+    annotationProcessor 'com.squareup:javapoet:1.8.0' // https://github.com/rharter/auto-value-parcel/issues/64
 
     compile  "com.google.dagger:dagger:${daggerVersion}"
     provided 'javax.annotation:jsr250-api:1.0' // Required by Dagger2
@@ -212,7 +210,7 @@ dependencies {
     debugCompile "com.facebook.stetho:stetho-okhttp3:${stethoVersion}"
     debugCompile "com.facebook.stetho:stetho-timber:${stethoVersion}@aar"
 
-    debugCompile "com.squareup.leakcanary:leakcanary-android:1.4-beta2"
+    debugCompile "com.squareup.leakcanary:leakcanary-android:1.5"
 
     debugCompile 'hu.supercluster:paperwork:1.2.7'
     debugCompile "com.github.pedrovgs:lynx:1.6"
@@ -232,9 +230,7 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-core:${espressoVersion}"
     androidTestCompile "com.android.support.test:runner:${supportTestRunnerVersion}"
     androidTestCompile "com.android.support.test:rules:${supportTestRunnerVersion}"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker:${dexmakerVersion}"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:${dexmakerVersion}"
-    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:${dexmakerVersion}"
+    androidTestCompile 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0'
 
     // Unit tests dependencies
     testCompile jUnit
@@ -242,7 +238,7 @@ dependencies {
     testCompile "org.hamcrest:hamcrest-core:${hamcrestVersion}"
     testCompile "org.hamcrest:hamcrest-library:${hamcrestVersion}"
     testCompile "org.hamcrest:hamcrest-integration:${hamcrestVersion}"
-    testCompile 'org.robolectric:robolectric:3.1'
+    testCompile 'org.robolectric:robolectric:3.2.2'
     testCompile "com.squareup.okhttp3:mockwebserver:${okhttpVersion}"
 }
 

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.digitalisma.boilerplate.DigitalismaApplication;
 import com.digitalisma.boilerplate.R;
+import com.digitalisma.boilerplate.injection.component.FragmentComponent;
+import com.digitalisma.boilerplate.injection.module.FragmentModule;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +29,9 @@ public class BaseFragment extends Fragment {
 
     @NonNull
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, @LayoutRes Integer layoutRes) {
+        BaseActivity activity = (BaseActivity) getActivity();
+        injectFragment(activity.getActivityComponent().fragmentComponent(new FragmentModule(activity)));
+
         super.onCreateView(inflater, container, savedInstanceState);
         return inflater.inflate(layoutRes, container, false);
     }
@@ -47,12 +52,9 @@ public class BaseFragment extends Fragment {
         if (Looper.myLooper() == Looper.getMainLooper() && isFragmentAlive()) {
             runnable.run();
         } else {
-            MAIN_THREAD_HANDLER.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (isFragmentAlive()) {
-                        runnable.run();
-                    }
+            MAIN_THREAD_HANDLER.post(() -> {
+                if (isFragmentAlive()) {
+                    runnable.run();
                 }
             });
         }
@@ -60,6 +62,10 @@ public class BaseFragment extends Fragment {
 
     private boolean isFragmentAlive() {
         return getActivity() != null && isAdded() && !isDetached() && getView() != null && !isRemoving();
+    }
+
+    protected void injectFragment(FragmentComponent component) {
+        // Override in case you want to inject
     }
 
 }

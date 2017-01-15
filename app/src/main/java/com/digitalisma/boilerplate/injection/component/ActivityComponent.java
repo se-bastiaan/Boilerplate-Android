@@ -3,6 +3,7 @@ package com.digitalisma.boilerplate.injection.component;
 import com.digitalisma.boilerplate.injection.PerActivity;
 import com.digitalisma.boilerplate.injection.module.ActivityModule;
 import com.digitalisma.boilerplate.injection.module.DeveloperSettingsModule;
+import com.digitalisma.boilerplate.injection.module.FragmentModule;
 import com.digitalisma.boilerplate.ui.main.MainActivity;
 
 import dagger.Subcomponent;
@@ -18,5 +19,7 @@ import dagger.Subcomponent;
 public interface ActivityComponent {
 
     void inject(MainActivity mainActivity);
+
+    FragmentComponent fragmentComponent(FragmentModule fragmentModule);
 
 }
