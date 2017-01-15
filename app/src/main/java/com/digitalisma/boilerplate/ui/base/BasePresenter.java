@@ -1,5 +1,9 @@
 package com.digitalisma.boilerplate.ui.base;
 
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -8,43 +12,54 @@ import rx.subscriptions.CompositeSubscription;
  * attachView() and detachView(). It also handles keeping a reference to the mvpView that
  * can be accessed from the children classes by calling mvpView().
  */
-public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
+public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
+    @Nullable
     private V mvpView;
-    private CompositeSubscription compositeSubscription = new CompositeSubscription();
+    @NonNull
+    private final CompositeSubscription subscriptionsToUnsubscribeOnDetach = new CompositeSubscription();
 
+    @CallSuper
     @Override
-    public void attachView(V mvpView) {
+    public void attachView(@NonNull V mvpView) {
+        if (this.mvpView != null) {
+            throw new IllegalStateException("Previous view is not detached! View: " + mvpView);
+        }
+
         this.mvpView = mvpView;
     }
 
+    @CallSuper
     @Override
-    public void detachView() {
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+    public void detachView(@NonNull V mvpView) {
+        if (this.mvpView == mvpView) {
+            this.mvpView = null;
+        } else {
+            throw new IllegalStateException("Unexpected view! View: " + mvpView + ", view to detach first: " + this.mvpView);
         }
-        mvpView = null;
+
+        subscriptionsToUnsubscribeOnDetach.clear();
     }
 
-    public boolean isViewAttached() {
+    protected boolean isViewAttached() {
         return mvpView != null;
     }
 
-    public V view() {
+    protected V view() {
         return mvpView;
     }
 
-    public void checkViewAttached() {
+    protected void checkViewAttached() {
         if (!isViewAttached()) throw new MvpViewNotAttachedException();
     }
 
-    public void add(Subscription subscription) {
-        compositeSubscription.add(subscription);
+    protected final void unsubscribeOnDetachView(Subscription subscription) {
+        subscriptionsToUnsubscribeOnDetach.add(subscription);
     }
 
     public static class MvpViewNotAttachedException extends RuntimeException {
         public MvpViewNotAttachedException() {
-            super("Please call Presenter.attachView(MvpView) before" +
+            super("Please call BasePresenter.attachView(MvpView) before" +
                     " requesting data to the Presenter");
         }
     }

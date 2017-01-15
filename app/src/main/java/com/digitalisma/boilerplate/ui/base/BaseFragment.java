@@ -19,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
     @NonNull
     private static final Handler MAIN_THREAD_HANDLER = new Handler(Looper.getMainLooper());
